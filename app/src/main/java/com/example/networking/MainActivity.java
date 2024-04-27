@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -18,7 +19,7 @@ import java.util.List;
 @SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity implements JsonTask.JsonTaskListener {
 
-    private final String JSON_URL = "HTTPS_URL_TO_JSON_DATA_CHANGE_THIS_URL";
+    private final String JSON_URL = "https://mobprog.webug.se/json-api?login=brom";
     private final String JSON_FILE = "mountains.json";
 
     private ArrayList<Mountain> mountainList;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
             }
         });
 
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
 
@@ -60,7 +63,9 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
         Gson gson = new Gson();
 
         Type type = new TypeToken<List<Mountain>>() {}.getType();
-        List<Mountain> listOfMountains = gson.fromJson(json, type);
+        mountainList = gson.fromJson(json, type);
+
+        adapter.notifyDataSetChanged();
 
     }
 
